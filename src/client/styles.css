@@ -1,0 +1,14 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; font-family: ui-sans-serif, system-ui, sans-serif; background: #0b0b0e; color: #e6e6ea; }
+body { display: flex; }
+#root { flex: 1; display: flex; }
+.chat { flex: 1; display: flex; flex-direction: column; max-width: 720px; margin: 0 auto; padding: 1rem; gap: 1rem; }
+header h1 { margin: 0; font-weight: 600; letter-spacing: -0.02em; }
+.messages { list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; }
+.messages li { padding: 0.75rem 1rem; border-radius: 12px; background: #16161c; border: 1px solid #23232b; }
+.messages li[data-role="user"] { background: #1c2536; border-color: #2c3a55; }
+.messages li strong { display: block; font-size: 0.75rem; text-transform: uppercase; opacity: 0.6; margin-bottom: 0.25rem; }
+.composer { display: flex; gap: 0.5rem; }
+.composer input { flex: 1; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid #2a2a35; background: #14141a; color: inherit; font: inherit; }
+.composer button { padding: 0.75rem 1.25rem; border-radius: 10px; border: 0; background: #4f7df1; color: white; font: inherit; cursor: pointer; }
+.composer button:disabled { opacity: 0.5; cursor: not-allowed; }

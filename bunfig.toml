@@ -1,16 +1,1 @@
 [install]
-minimumReleaseAgeExcludes = [
-  "alchemy",
-  "effect",
-  "@effect/platform-bun",
-  "@effect/platform-node",
-  "@alchemy.run/node-utils",
-  "@distilled.cloud/core",
-  "@distilled.cloud/aws",
-  "@distilled.cloud/axiom",
-  "@distilled.cloud/cloudflare",
-  "@distilled.cloud/cloudflare-rolldown-plugin",
-  "@distilled.cloud/cloudflare-runtime",
-  "@distilled.cloud/cloudflare-vite-plugin",
-  "@distilled.cloud/neon",
-]

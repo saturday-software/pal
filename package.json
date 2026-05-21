@@ -4,28 +4,27 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "typecheck": "tsgo --noEmit",
-    "prepare": "effect-tsgo patch"
+    "typecheck": "tsc --noEmit",
+    "build:client": "bun build src/client/index.html --outdir dist",
+    "dev": "bun x wrangler dev",
+    "deploy": "bun run build:client && bun x wrangler deploy",
+    "cf-typegen": "bun x wrangler types"
   },
   "devDependencies": {
-    "@effect/tsgo": "^0.7.3",
+    "@cloudflare/workers-types": "^4.20251108.0",
     "@types/bun": "latest",
-    "@typescript/native-preview": "^7.0.0-dev.20260518.1"
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^6",
+    "wrangler": "^4.50.0"
   },
   "dependencies": {
-    "@effect/platform-bun": "^4.0.0-beta.66",
-    "@effect/platform-node": "^4.0.0-beta.66",
-    "alchemy": "2.0.0-beta.40",
-    "effect": "^4.0.0-beta.66"
-  },
-  "install": {
-    "minimumReleaseAgeExcludes": [
-      "alchemy",
-      "effect",
-      "@effect/platform-bun",
-      "@effect/platform-node",
-      "@effect/tsgo",
-      "@typescript/native-preview"
-    ]
+    "@ai-sdk/anthropic": "^3.0.78",
+    "@ai-sdk/react": "^3.0.186",
+    "@cloudflare/ai-chat": "^0.7.0",
+    "agents": "^0.12.4",
+    "ai": "^6.0.184",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   }
 }
