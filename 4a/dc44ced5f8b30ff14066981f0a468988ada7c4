@@ -1,0 +1,27 @@
+bunfig.toml
+  s_cf96a692fc6342::t_6058b8dc2a7cd0 2-4,16
+  s_cf96a692fc6342::t_65146fe79468f9 5-15
+  s_cf96a692fc6342::t_352511c6bbe439 1
+package.json
+  s_cf96a692fc6342::t_05c8351ff77d34 13-16
+  s_cf96a692fc6342::t_aca9b5581baf2d 17-19
+  s_cf96a692fc6342::t_a811edae6c3d2a 11-12
+alchemy.run.ts
+  s_cf96a692fc6342::t_b5bc6df9fcac01 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "4adc44ced5f8b30ff14066981f0a468988ada7c4",
+  "prompts": {},
+  "sessions": {
+    "s_cf96a692fc6342": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a98efa8f-26d6-41c9-8d0b-49f77deb41af",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    }
+  }
+}
