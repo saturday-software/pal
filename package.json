@@ -3,11 +3,14 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "scripts": {
+    "typecheck": "tsgo --noEmit",
+    "prepare": "effect-tsgo patch"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "devDependencies": {
+    "@effect/tsgo": "^0.7.3",
+    "@types/bun": "latest",
+    "@typescript/native-preview": "^7.0.0-dev.20260518.1"
   },
   "dependencies": {
     "@effect/platform-bun": "^4.0.0-beta.66",
@@ -16,6 +19,13 @@
     "effect": "^4.0.0-beta.66"
   },
   "install": {
-    "minimumReleaseAgeExcludes": ["alchemy", "effect", "@effect/platform-bun", "@effect/platform-node"]
+    "minimumReleaseAgeExcludes": [
+      "alchemy",
+      "effect",
+      "@effect/platform-bun",
+      "@effect/platform-node",
+      "@effect/tsgo",
+      "@typescript/native-preview"
+    ]
   }
 }
