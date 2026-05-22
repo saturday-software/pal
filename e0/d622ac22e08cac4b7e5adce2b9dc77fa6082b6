@@ -1,0 +1,50 @@
+bunfig.toml
+  s_47daa8aebba418::t_c79b062e991f7b 2-4
+package.json
+  s_632af717fe90d2::t_2f9ff5b1a6576e 27-28,44,50
+  s_47daa8aebba418::t_c256e31a93170d 36-37,39,46-47
+  s_47daa8aebba418::t_afa3993e30fb06 18-19
+  s_47daa8aebba418::t_63321936e9a4c2 8
+  s_47daa8aebba418::t_6f9a39fab1b1ab 7
+  s_632af717fe90d2::t_aea2bb34274c70 49
+  s_47daa8aebba418::t_1a51013987a985 29-33,35,38,40-42,45,48
+tsconfig.json
+  s_47daa8aebba418::t_13e0012d0fa8fd 7
+  s_47daa8aebba418::t_55793820e74063 8
+  s_47daa8aebba418::t_1f25d6b3422645 3-6
+scripts/build-client.ts
+  s_47daa8aebba418::t_6696761cbbc3d4 1,24-25
+  s_47daa8aebba418::t_874176d218e6fb 8
+  s_47daa8aebba418::t_f41b480b8d8475 2,4
+  s_47daa8aebba418::t_c11fdce5e84c2b 3,5-7,9-23,26-47
+mise.toml
+  s_47daa8aebba418::t_fbadb73944cca4 16-19,23
+  s_47daa8aebba418::t_4295ac80e9fc7a 25-27,30
+  s_47daa8aebba418::t_f631ec0bc335da 32
+wrangler.jsonc
+  s_632af717fe90d2::t_85e0010b80637a 7-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "e0d622ac22e08cac4b7e5adce2b9dc77fa6082b6",
+  "prompts": {},
+  "sessions": {
+    "s_47daa8aebba418": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b53f29ef-b2e4-4983-98b2-b3043c2d311c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    },
+    "s_632af717fe90d2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "524942dc-b592-44be-b7ec-3b3ffe087c8f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    }
+  }
+}
