@@ -4,6 +4,9 @@
   "main": "src/Pal.ts",
   "compatibility_date": "2026-05-02",
   "compatibility_flags": ["nodejs_compat"],
+  "ai": {
+    "binding": "AI"
+  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

@@ -13,16 +13,27 @@ _.path = "node_modules/.bin"
 
 [tasks.typecheck]
 description = "Type-check the project"
-run = "bun x tsc --noEmit"
+run = [
+  "bun x tsc -p tsconfig.client.json --noEmit",
+  "bun x tsc -p tsconfig.server.json --noEmit",
+]
 
 [tasks."build:client"]
 description = "Build the client bundle"
-run = "bun build src/client/index.html --outdir dist"
+run = "bun run scripts/build-client.ts"
+
+[tasks."build:client:watch"]
+description = "Rebuild the client bundle on changes"
+run = "bun run scripts/build-client.ts --watch"
 
 [tasks.dev]
-description = "Start the wrangler dev server"
+description = "Start the wrangler dev server with client rebuild on changes"
 depends = ["build:client"]
-run = "wrangler dev"
+run = """
+bun run scripts/build-client.ts --watch & WATCH_PID=$!;
+trap 'kill $WATCH_PID 2>/dev/null' EXIT INT TERM;
+wrangler dev
+"""
 
 [tasks.deploy]
 description = "Build client and deploy via wrangler"
