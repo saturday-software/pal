@@ -1,43 +1,43 @@
-import { createAnthropic } from "@ai-sdk/anthropic";
-import { AIChatAgent } from "@cloudflare/ai-chat";
+import { Session, Think } from "@cloudflare/think";
 import { routeAgentRequest } from "agents";
-import { convertToModelMessages, streamText, tool } from "ai";
+import { AgentSearchProvider } from "agents/experimental/memory/session";
+import { tool } from "ai";
+import { createWorkersAI } from "workers-ai-provider";
 import { z } from "zod";
 
-export interface Env {
-  ANTHROPIC_API_TOKEN: string;
-  ASSETS: Fetcher;
-  Chat: DurableObjectNamespace<Chat>;
-}
+export class Chat extends Think<Env> {
+  override getModel() {
+    return createWorkersAI({ binding: this.env.AI })(
+      "@cf/moonshotai/kimi-k2.6",
+    );
+  }
 
-export class Chat extends AIChatAgent<Env> {
-  override async onChatMessage(
-    onFinish: Parameters<AIChatAgent<Env>["onChatMessage"]>[0],
-  ) {
-    const anthropic = createAnthropic({
-      authToken: this.env.ANTHROPIC_API_TOKEN,
-      headers: {
-        "anthropic-beta": "oauth-2025-04-20,claude-code-20250219",
-        "User-Agent": "claude-cli/1.0.119 (external, cli)",
-        "x-app": "cli",
-      },
-    });
-    const result = streamText({
-      model: anthropic("claude-sonnet-4-6"),
-      maxOutputTokens: 4096,
-      system:
-        "You are Claude Code, Anthropic's official CLI for Claude.",
-      messages: await convertToModelMessages(this.messages),
-      tools: {
-        getCurrentTime: tool({
-          description: "Get the current server time as an ISO 8601 string.",
-          inputSchema: z.object({}),
-          execute: async () => new Date().toISOString(),
-        }),
-      },
-      onFinish,
-    });
-    return result.toUIMessageStreamResponse();
+  override configureSession(session: Session) {
+    return session
+      .withContext("soul", {
+        provider: { get: async () => "You are Pal, a helpful assistant." },
+      })
+      .withContext("memory", {
+        description:
+          "Short-term working memory for the current conversation. Use for active tasks, recent decisions, and facts only relevant right now. Persist anything worth remembering across sessions to `knowledge`.",
+        maxTokens: 2000,
+      })
+      .withContext("knowledge", {
+        description:
+          "Long-term memory across all conversations. Use `set_context` to save durable facts (preferences, identities, recurring topics) and `search_context` to recall them. Prefer concise, self-contained entries keyed by topic.",
+        provider: new AgentSearchProvider(this),
+      })
+      .withCachedPrompt();
+  }
+
+  override getTools() {
+    return {
+      getCurrentTime: tool({
+        description: "Get the current server time as an ISO 8601 string.",
+        inputSchema: z.object({}),
+        execute: async () => new Date().toISOString(),
+      }),
+    };
   }
 }
 
