@@ -28,7 +28,7 @@ export class Chat extends Think<Env, ChatState> implements ChatRpc {
         })
         .withContext("knowledge", {
           description:
-            "Long-term memory across all conversations. Use `set_context` to save durable facts (preferences, identities, recurring topics) and `search_context` to recall them. Prefer concise, self-contained entries keyed by topic.",
+            "Long-term memory across all conversations. Use `set_context` to save durable facts (preferences, identities, recurring topics) and `search_context` to recall them. Prefer concise, self-contained entries keyed by topic. When asked a question you don't know the answer to, search your knowledge base first.",
           provider: new AgentSearchProvider(this),
         })
         .withCachedPrompt();
@@ -48,8 +48,7 @@ export class Chat extends Think<Env, ChatState> implements ChatRpc {
 
     if (!activeId || !manager.get(activeId)) {
       const existing = manager.list();
-      activeId =
-        existing[0]?.id ?? manager.create("New chat").id;
+      activeId = existing[0]?.id ?? manager.create("New chat").id;
     }
 
     this._syncState(activeId);
