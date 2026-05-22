@@ -1,0 +1,30 @@
+src/Pal.ts
+  s_632af717fe90d2::t_b5b15fd31e6c66 4,8-9,13-14,31,33-40
+  s_d63ea6f025cfff::t_3f4ed0b68b70c6 3,21-28
+  s_632af717fe90d2::t_afc725886a5b21 5,10-12
+  s_632af717fe90d2::t_903a9228b14bc0 1,15-20,29-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "450971fa95e5a351783c62b7f6073f88f28cacc0",
+  "prompts": {},
+  "sessions": {
+    "s_632af717fe90d2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "524942dc-b592-44be-b7ec-3b3ffe087c8f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    },
+    "s_d63ea6f025cfff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62a0065b-c8fd-404d-9a3e-e763acc0f5cb",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    }
+  }
+}
