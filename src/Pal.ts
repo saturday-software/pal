@@ -1,3 +1,4 @@
+import type { ChatResponseResult } from "@cloudflare/think";
 import { Session, Think } from "@cloudflare/think";
 import { callable, routeAgentRequest } from "agents";
 import {
@@ -5,13 +6,20 @@ import {
   SessionManager,
   type SessionInfo,
 } from "agents/experimental/memory/session";
-import { tool } from "ai";
 import { createWorkersAI } from "workers-ai-provider";
-import { z } from "zod";
+import {
+  createPalTools,
+  PAL_KNOWLEDGE_DESCRIPTION,
+  PAL_MEMORY_DESCRIPTION,
+  PAL_MODEL_ID,
+  PAL_SOUL,
+} from "./agent-config";
 import type { ChatRpc, ChatState } from "./shared";
 
 export class Chat extends Think<Env, ChatState> implements ChatRpc {
   override initialState: ChatState = { activeSessionId: "", sessions: [] };
+
+  private _retryingEmptyResponse = false;
 
   private _manager?: SessionManager;
 
@@ -19,16 +27,14 @@ export class Chat extends Think<Env, ChatState> implements ChatRpc {
     if (!this._manager) {
       this._manager = SessionManager.create(this)
         .withContext("soul", {
-          provider: { get: async () => "You are Pal, a helpful assistant." },
+          provider: { get: async () => PAL_SOUL },
         })
         .withContext("memory", {
-          description:
-            "Short-term working memory for the current conversation. Use for active tasks, recent decisions, and facts only relevant right now. Persist anything worth remembering across sessions to `knowledge`.",
+          description: PAL_MEMORY_DESCRIPTION,
           maxTokens: 2000,
         })
         .withContext("knowledge", {
-          description:
-            "Long-term memory across all conversations. Use `set_context` to save durable facts (preferences, identities, recurring topics) and `search_context` to recall them. Prefer concise, self-contained entries keyed by topic. When asked a question you don't know the answer to, search your knowledge base first.",
+          description: PAL_KNOWLEDGE_DESCRIPTION,
           provider: new AgentSearchProvider(this),
         })
         .withCachedPrompt();
@@ -37,9 +43,7 @@ export class Chat extends Think<Env, ChatState> implements ChatRpc {
   }
 
   override getModel() {
-    return createWorkersAI({ binding: this.env.AI })(
-      "@cf/moonshotai/kimi-k2.6",
-    );
+    return createWorkersAI({ binding: this.env.AI })(PAL_MODEL_ID);
   }
 
   override async configureSession(_session: Session): Promise<Session> {
@@ -56,13 +60,41 @@ export class Chat extends Think<Env, ChatState> implements ChatRpc {
   }
 
   override getTools() {
-    return {
-      getCurrentTime: tool({
-        description: "Get the current server time as an ISO 8601 string.",
-        inputSchema: z.object({}),
-        execute: async () => new Date().toISOString(),
-      }),
-    };
+    return createPalTools();
+  }
+
+  // Workers AI's Kimi endpoint occasionally returns an assistant turn with
+  // no text — typically tool calls followed by no synthesis. That surfaces
+  // as a blank bubble after Pal "thinks" but never answers. Discard the
+  // empty message and re-run inference once so the user sees a real reply.
+  override async onChatResponse(result: ChatResponseResult): Promise<void> {
+    if (result.status !== "completed") return;
+    if (this._retryingEmptyResponse) return;
+
+    const message = result.message;
+    if (message.role !== "assistant") return;
+
+    const hasUsableText = message.parts.some(
+      (p) =>
+        p.type === "text" &&
+        typeof p.text === "string" &&
+        p.text.trim().length > 0,
+    );
+    if (hasUsableText) return;
+
+    this._retryingEmptyResponse = true;
+    try {
+      this.session.deleteMessages([message.id]);
+      this.broadcast(
+        JSON.stringify({
+          type: "cf_agent_chat_messages",
+          messages: this.messages,
+        }),
+      );
+      await this.saveMessages([]);
+    } finally {
+      this._retryingEmptyResponse = false;
+    }
   }
 
   private _syncState(activeSessionId: string) {
