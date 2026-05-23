@@ -1,0 +1,48 @@
+src/agent-config.ts
+  s_bd19a81ecd1b3d::t_380d9da4626dfc 19-20,24
+  s_5c4fc8b6e17da1::t_488bffa8edbae0 1-5,15-18,25-34
+  s_bd19a81ecd1b3d::t_dde0d3f0f7b80d 6-7
+  s_bd19a81ecd1b3d::t_0a5bbbf24e89f1 21-23
+  s_935f1f597542d0::t_2673bcd8021878 13
+  s_bd19a81ecd1b3d::t_a7e98a9d64eba3 8-12,14
+src/Pal.ts
+  s_5c4fc8b6e17da1::t_5eac1acf821227 30,33,37
+  s_5c4fc8b6e17da1::t_fdd75bea942f24 46
+  s_bd19a81ecd1b3d::t_4102c713e88b07 66,70-97
+  s_5c4fc8b6e17da1::t_3720c4ea071456 63
+  s_bd19a81ecd1b3d::t_5b621e46c25f97 67-69
+  s_bd19a81ecd1b3d::t_70ed81bc21bc40 1,22
+  s_5c4fc8b6e17da1::t_a68dc5b31fffb4 10-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "21d563adf367f6748c39349eb57eb43e71167afb",
+  "prompts": {},
+  "sessions": {
+    "s_5c4fc8b6e17da1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3593a36f-02a9-49d2-8592-ffadefc94b79",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    },
+    "s_935f1f597542d0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bcb17fa1-ae69-49e5-82d3-697503188fab",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    },
+    "s_bd19a81ecd1b3d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f3611c40-b293-4574-998b-8550d1119081",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    }
+  }
+}
