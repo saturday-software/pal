@@ -1,0 +1,66 @@
+evals/README.md
+  s_5c4fc8b6e17da1::t_437cb93c1c8c7f 1-5,11-13,17-18,20-22,30-32
+  s_5c4fc8b6e17da1::t_b06549f77dce32 6-10,14-16,19,23-29,33-35
+tsconfig.evals.json
+  s_5c4fc8b6e17da1::t_78773ddc432126 4-7,9-13
+  s_5c4fc8b6e17da1::t_6ae31c3ef21633 1-3,8,14
+evals/pal.eval.ts
+  s_bd19a81ecd1b3d::t_baa83023b9e869 1,3-9,14,21-26,28-30,32,34-39,41-44,46-48,50-55,57,66,73-75,79-84,86-90,92-95,102,106-107,113-114
+  s_5c4fc8b6e17da1::t_11271a4c8dd05f 2,10-13,15-20,33,56,61-65,67-72,96,98-101,104-105,108,110-112,116-118
+  s_935f1f597542d0::t_fb5399eb2ae3df 27,31,40,45,49,58-60
+  s_935f1f597542d0::t_53d0d37f10849c 76-78,85,91,97,103,109,115
+bunfig.toml
+  s_5c4fc8b6e17da1::t_81fc5f94590067 2-3
+package.json
+  s_5c4fc8b6e17da1::t_29a8dc72ea3191 7
+  s_5c4fc8b6e17da1::t_d2341416788438 17
+  s_5c4fc8b6e17da1::t_735b119e3d57d1 11-14
+  s_5c4fc8b6e17da1::t_708517fdb23fa6 26
+  s_5c4fc8b6e17da1::t_8cf4f57d010c7c 22,27
+evals/shared.ts
+  s_bd19a81ecd1b3d::t_3781027d442da0 19-96,102-127,136,144-148
+  s_bd19a81ecd1b3d::t_78644621ff76ea 150-154
+  s_5c4fc8b6e17da1::t_0b5b72cbaa5551 155
+  s_5c4fc8b6e17da1::t_ec16066abb79bf 142
+  s_5c4fc8b6e17da1::t_ee225e6c0f05a0 1-5,9
+  s_5c4fc8b6e17da1::t_663b97c9655231 156-159
+  s_5c4fc8b6e17da1::t_8b8555b1f04dca 7-8,10-16,18,131,133-135,137-141,143,149
+  s_5c4fc8b6e17da1::t_402d634a757099 6,17
+  s_5c4fc8b6e17da1::t_7925a9530c81bc 97-101,128-130,132
+vitest.evals.config.ts
+  s_5c4fc8b6e17da1::t_daf64e8d2fe9da 1,5-9
+  s_5c4fc8b6e17da1::t_5ba09ce97bd056 12
+  s_5c4fc8b6e17da1::t_89f16f34888425 2-4,10-11,13-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "3e9f0b3284dd761d0ad788cf3c6e5016a0de7248",
+  "prompts": {},
+  "sessions": {
+    "s_5c4fc8b6e17da1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3593a36f-02a9-49d2-8592-ffadefc94b79",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    },
+    "s_935f1f597542d0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bcb17fa1-ae69-49e5-82d3-697503188fab",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    },
+    "s_bd19a81ecd1b3d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f3611c40-b293-4574-998b-8550d1119081",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    }
+  }
+}
