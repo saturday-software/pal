@@ -1,4 +1,6 @@
 [install]
+minimumReleaseAge = 259200
+minimumReleaseAgeExcludes = ["vitest-evals", "@vitest-evals/harness-ai-sdk"]
 
 [serve.static]
 plugins = ["bun-plugin-tailwind"]

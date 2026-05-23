@@ -4,20 +4,27 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "typecheck": "tsc -p tsconfig.client.json --noEmit && tsc -p tsconfig.server.json --noEmit",
+    "typecheck": "tsc -p tsconfig.client.json --noEmit && tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.evals.json --noEmit",
     "build:client": "bun run scripts/build-client.ts",
     "dev": "bun x wrangler dev",
     "deploy": "bun run build:client && bun x wrangler deploy",
-    "cf-typegen": "bun x wrangler types"
+    "cf-typegen": "bun x wrangler types",
+    "evals": "vitest run --config vitest.evals.config.ts --reporter=vitest-evals/reporter",
+    "evals:watch": "vitest --config vitest.evals.config.ts --reporter=vitest-evals/reporter",
+    "evals:verbose": "vitest run --config vitest.evals.config.ts --reporter=vitest-evals/reporter -- -vv"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.16.6",
     "@cloudflare/workers-types": "^4.20251108.0",
     "@types/bun": "latest",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@vitest-evals/harness-ai-sdk": "0.10.0",
     "bun-plugin-tailwind": "^0.1.2",
     "tailwindcss": "^4",
     "typescript": "^6",
+    "vitest": "^4.1.6",
+    "vitest-evals": "0.10.0",
     "wrangler": "^4.50.0"
   },
   "dependencies": {
