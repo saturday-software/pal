@@ -1,0 +1,31 @@
+src/client/components/feedback-dialog.tsx
+  s_081d0652d1e530::t_3adacb26da2076 1-121
+src/client/components/chat-thread.tsx
+  s_081d0652d1e530::t_140dd54cf09a46 1-130
+src/client/components/session-sidebar.tsx
+  s_081d0652d1e530::t_036d46795bb301 1-99
+src/client/App.tsx
+  s_081d0652d1e530::t_c472f563b47987 3,7
+  s_081d0652d1e530::t_af75f838193426 21-23
+  s_081d0652d1e530::t_963e0639d67109 5-6,8,59-66,68-75
+  s_081d0652d1e530::t_35f2d7c53d6bee 77-78,82
+  s_081d0652d1e530::t_ca911ae5fc7ce5 79-81
+  s_081d0652d1e530::t_e02f460da5b131 20
+  s_081d0652d1e530::t_1dde685e97bcf1 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "7d830c78d511cdbcdcb23497cf5d0e02683d9699",
+  "prompts": {},
+  "sessions": {
+    "s_081d0652d1e530": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0c4079f4-44db-4535-97f8-3dc63ee2ed24",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    }
+  }
+}
