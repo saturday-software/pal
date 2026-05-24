@@ -1,12 +1,17 @@
 import { useAgentChat } from "@cloudflare/ai-chat/react";
 import { useAgent } from "agents/react";
 import type { UIMessage } from "ai";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { PromptInputMessage } from "@/components/ai-elements/prompt-input";
 import { ChatThread } from "@/components/chat-thread";
 import { FeedbackDialog } from "@/components/feedback-dialog";
 import { SessionSidebar } from "@/components/session-sidebar";
-import type { ChatRpc, ChatState } from "../shared";
+import type {
+  ChatRpc,
+  ChatState,
+  PalMessageTraceBroadcast,
+  SubmitFeedbackResult,
+} from "../shared";
 
 export function App() {
   const agent = useAgent<ChatRpc, ChatState>({ agent: "chat" });
@@ -19,6 +24,71 @@ export function App() {
 
   const [feedbackMessage, setFeedbackMessage] = useState<UIMessage | null>(
     null,
+  );
+
+  // Per-message Langfuse trace IDs broadcast by Pal._closeTurnAndBroadcast.
+  // Stored in a ref so the listener doesn't re-register on every update.
+  // Grows across the page lifetime (not pruned on session switch); for
+  // realistic usage the per-entry cost is tiny and v1 doesn't need
+  // eviction — revisit if long-lived tabs become a memory issue.
+  const traceIdsRef = useRef<Map<string, string>>(new Map());
+  const [traceIdsVersion, setTraceIdsVersion] = useState(0);
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (typeof event.data !== "string") return;
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(event.data);
+      } catch {
+        return;
+      }
+      if (
+        !parsed ||
+        typeof parsed !== "object" ||
+        (parsed as { type?: unknown }).type !== "pal_message_trace"
+      ) {
+        return;
+      }
+      const { messageId, traceId } = parsed as PalMessageTraceBroadcast;
+      if (typeof messageId !== "string" || typeof traceId !== "string") {
+        return;
+      }
+      // OTel trace IDs are 32 lowercase hex chars. Cheap defense-in-depth
+      // against a malformed or hostile payload remapping a real message
+      // to an attacker-controlled trace.
+      if (!/^[0-9a-f]{32}$/.test(traceId)) return;
+      traceIdsRef.current.set(messageId, traceId);
+      setTraceIdsVersion((v) => v + 1);
+    };
+    agent.addEventListener("message", onMessage);
+    return () => agent.removeEventListener("message", onMessage);
+  }, [agent]);
+
+  const getTraceId = useCallback(
+    (messageId: string): string | undefined =>
+      traceIdsRef.current.get(messageId),
+    // traceIdsVersion bump keeps consumers re-evaluating when new
+    // mappings arrive after first render.
+    // biome-ignore lint/correctness/useExhaustiveDependencies: see comment
+    [traceIdsVersion],
+  );
+
+  const submitFeedback = useCallback(
+    async (args: {
+      messageId: string;
+      traceId: string;
+      expected: string;
+      justification: string;
+    }): Promise<SubmitFeedbackResult> => {
+      return agent.stub.submitFeedback({
+        messageId: args.messageId,
+        traceId: args.traceId,
+        expected: args.expected,
+        justification: args.justification,
+      });
+    },
+    [agent],
   );
 
   const handleSubmit = (message: PromptInputMessage) => {
@@ -76,6 +146,10 @@ export function App() {
 
       <FeedbackDialog
         message={feedbackMessage}
+        traceId={
+          feedbackMessage ? getTraceId(feedbackMessage.id) : undefined
+        }
+        onSubmit={submitFeedback}
         onOpenChange={(open) => {
           if (!open) setFeedbackMessage(null);
         }}
