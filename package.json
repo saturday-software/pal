@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "typecheck": "tsc -p tsconfig.client.json --noEmit && tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.evals.json --noEmit",
+    "typecheck": "tsc --noEmit",
     "build:client": "bun run scripts/build-client.ts",
     "dev": "bun x wrangler dev",
     "deploy": "bun run build:client && bun x wrangler deploy",
