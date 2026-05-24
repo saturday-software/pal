@@ -1,0 +1,32 @@
+src/Pal.ts
+  s_2dc1d5888e78ca::t_8be18f67c65fbf 55-96,107-122,168-174,179,184-188,199,205,211,228,236,241-246,253,265-271,273-274,277-283,289-321,402-415
+  s_2dc1d5888e78ca::t_188267b2459e7f 105-106,123-124
+  s_2dc1d5888e78ca::t_a89d7762de8504 31
+  s_2dc1d5888e78ca::t_77a4b162e64c0b 1-5,7-15,22,32-53
+  s_2dc1d5888e78ca::t_330d72872de6a0 165-167,175-178,180-183,189-198,200-204,206-210,212-217,223-227,229-230,233,235,237-240,247-252
+  s_2dc1d5888e78ca::t_63121e883d88e7 272,275-276
+wrangler.jsonc
+  s_2dc1d5888e78ca::t_2949bc59825af8 32-33
+  s_2dc1d5888e78ca::t_b420f6866362c2 34
+src/shared.ts
+  s_2dc1d5888e78ca::t_c666758345104d 11,17-23
+  s_2dc1d5888e78ca::t_0011e7e92583d3 12-16
+worker-configuration.d.ts
+  s_2dc1d5888e78ca::t_90e55f2db84f72 2,7-9,24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "daa7461fee6aaf4b76907675d267c248e4c6a90e",
+  "prompts": {},
+  "sessions": {
+    "s_2dc1d5888e78ca": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ff7b6bb-d0e0-4867-aba8-20b9d9afe36c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Robert Queenin <2177841+ecalifornica@users.noreply.github.com>"
+    }
+  }
+}

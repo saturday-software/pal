@@ -1,0 +1,21 @@
+tsconfig.client.json
+  s_2dc1d5888e78ca::t_9530491d43b902 26-27
+tsconfig.json
+  s_2dc1d5888e78ca::t_716bb13cdd55f5 26-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "077532d5e22c9fbca8fef083a2282d8b1bd09b5d",
+  "prompts": {},
+  "sessions": {
+    "s_2dc1d5888e78ca": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ff7b6bb-d0e0-4867-aba8-20b9d9afe36c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Robert Queenin <2177841+ecalifornica@users.noreply.github.com>"
+    }
+  }
+}

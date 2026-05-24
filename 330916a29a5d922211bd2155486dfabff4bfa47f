@@ -1,0 +1,31 @@
+tests/span-structure.test.ts
+  s_2dc1d5888e78ca::t_49f4072f97524e 141-144,149-152
+  s_2dc1d5888e78ca::t_e0b32efe6f12f1 2,9-12,14-17,19-21,57-58,78-80,104-114,116-119,122,124-127,129-131,133,161-162
+  s_2dc1d5888e78ca::t_29611a1f197fbe 1,3-8,13,18,22-56,59-77,81-103,115,120-121,123,128,132,134-140,145-148,153-160
+package.json
+  s_2dc1d5888e78ca::t_80d659d90b2269 7,12
+tests/tsconfig.json
+  s_2dc1d5888e78ca::t_666d56964b2c4d 1-3,11,13
+  s_2dc1d5888e78ca::t_19fc35bef31a7e 4-7
+  s_2dc1d5888e78ca::t_8b2e2c5a52859f 8-10,12
+vitest.tests.config.ts
+  s_2dc1d5888e78ca::t_8b30f592ab310e 2,7-13
+  s_2dc1d5888e78ca::t_1b371ae6edf8cb 3-6
+  s_2dc1d5888e78ca::t_35d7d0c520c48a 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "330916a29a5d922211bd2155486dfabff4bfa47f",
+  "prompts": {},
+  "sessions": {
+    "s_2dc1d5888e78ca": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ff7b6bb-d0e0-4867-aba8-20b9d9afe36c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Robert Queenin <2177841+ecalifornica@users.noreply.github.com>"
+    }
+  }
+}
