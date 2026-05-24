@@ -1,0 +1,19 @@
+package.json
+  s_1d8cf4f1bccce6::t_f7b76a365662e2 37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "99a59a183e9cf03537ee0f93b94913b8ee18ec87",
+  "prompts": {},
+  "sessions": {
+    "s_1d8cf4f1bccce6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "48435039-205d-4513-8f2b-bc4acf3e1649",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Robert Queenin <2177841+ecalifornica@users.noreply.github.com>"
+    }
+  }
+}
