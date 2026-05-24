@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.server.json",
+  "compilerOptions": {
+    // Keep Workers types from the parent so future tests can import
+    // server modules that reference `Env`/`Ai`/DO namespaces; also add
+    // node for `node:fs` and friends used by the source-level guards.
+    "types": ["node", "@cloudflare/workers-types"],
+    "lib": ["ESNext"],
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true
+  },
+  "include": ["**/*.ts"]
+}

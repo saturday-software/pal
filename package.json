@@ -4,11 +4,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "typecheck": "tsc -p tsconfig.client.json --noEmit && tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.evals.json --noEmit",
+    "typecheck": "tsc -p tsconfig.client.json --noEmit && tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.evals.json --noEmit && tsc -p tests/tsconfig.json --noEmit",
     "build:client": "bun run scripts/build-client.ts",
     "dev": "bun x wrangler dev",
     "deploy": "bun run build:client && bun x wrangler deploy",
     "cf-typegen": "bun x wrangler types",
+    "test": "vitest run --config vitest.tests.config.ts",
     "evals": "vitest run --config vitest.evals.config.ts --reporter=vitest-evals/reporter",
     "evals:watch": "vitest --config vitest.evals.config.ts --reporter=vitest-evals/reporter",
     "evals:verbose": "vitest run --config vitest.evals.config.ts --reporter=vitest-evals/reporter -- -vv"
