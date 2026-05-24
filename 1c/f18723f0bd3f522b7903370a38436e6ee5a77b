@@ -1,0 +1,25 @@
+src/client/components/ai-elements/conversation.tsx
+  s_640cfdad255f77::t_75dbae3f4ee965 147
+package.json
+  s_640cfdad255f77::t_095115faf6e7e0 7
+scripts/build-client.ts
+  s_640cfdad255f77::t_74e277f7aa7985 15
+tsconfig.json
+  s_640cfdad255f77::t_9683babb0f08d9 7,20,25-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "1cf18723f0bd3f522b7903370a38436e6ee5a77b",
+  "prompts": {},
+  "sessions": {
+    "s_640cfdad255f77": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4e3f066b-4742-46d5-bed7-07fb2b00061f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Justin Bennett <git@just-be.dev>"
+    }
+  }
+}
