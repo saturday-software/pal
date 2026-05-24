@@ -4,6 +4,7 @@ import type {
   TurnContext,
 } from "@cloudflare/think";
 import { Session, Think } from "@cloudflare/think";
+import { LangfuseClient } from "@langfuse/client";
 import { LangfuseSpanProcessor } from "@langfuse/otel";
 import {
   type LangfuseSpan,
@@ -28,7 +29,14 @@ import {
   PAL_MODEL_ID,
   PAL_SOUL,
 } from "./agent-config";
-import type { ChatRpc, ChatState, PalMessageTraceBroadcast } from "./shared";
+import { submitFeedbackImpl } from "./feedback";
+import type {
+  ChatRpc,
+  ChatState,
+  PalMessageTraceBroadcast,
+  SubmitFeedbackInput,
+  SubmitFeedbackResult,
+} from "./shared";
 
 // TODO(ai-v7): Vercel AI SDK v7 replaces `experimental_telemetry`'s
 // OpenTelemetry emission with a Telemetry callback interface. When Pal
@@ -60,6 +68,22 @@ function isEmptyAssistantMessage(message: UIMessage): boolean {
 // processor. Env values are constant across instances within an isolate,
 // so a singleton is safe.
 let providerSingleton: NodeTracerProvider | undefined;
+
+// Singleton for the same reason as `providerSingleton` — LangfuseClient
+// holds an internal score queue + flush timer; recreating it per call
+// would drop queued events and leak timers. Env values are stable per
+// isolate, so one client per isolate is safe.
+let langfuseClientSingleton: LangfuseClient | undefined;
+
+function getLangfuseClient(env: Env): LangfuseClient {
+  if (langfuseClientSingleton) return langfuseClientSingleton;
+  langfuseClientSingleton = new LangfuseClient({
+    publicKey: env.LANGFUSE_PUBLIC_KEY,
+    secretKey: env.LANGFUSE_SECRET_KEY,
+    baseUrl: env.LANGFUSE_BASE_URL,
+  });
+  return langfuseClientSingleton;
+}
 
 function getTracerProvider(env: Env): NodeTracerProvider {
   if (providerSingleton) return providerSingleton;
@@ -389,6 +413,41 @@ export class Chat extends Think<Env, ChatState> implements ChatRpc {
       this._syncState(activeId);
     }
     return { activeSessionId: activeId };
+  }
+
+  @callable()
+  async submitFeedback(
+    input: SubmitFeedbackInput,
+  ): Promise<SubmitFeedbackResult> {
+    // Same trust boundary as the session callables: we accept
+    // `traceId` straight from the client without re-deriving it from
+    // server-side state. Persisting message→trace mappings in DO
+    // storage would be more authoritative but adds a write per turn
+    // for no real safety win — see PR description.
+    const originalInput = this._findOriginalUserInputFor(input?.messageId);
+    return submitFeedbackImpl(getLangfuseClient(this.env), input, {
+      originalInput,
+    });
+  }
+
+  // Looks up the user message immediately preceding the rated assistant
+  // message so `submitFeedbackImpl` can write it as `DatasetItem.input`.
+  // Returns undefined when the assistant message isn't found, or when
+  // there's no preceding message, or when the preceding message isn't
+  // from the user — `submitFeedbackImpl` will then skip the dataset
+  // write and log a warning, which is the right failure mode (score +
+  // trace Comment still land).
+  private _findOriginalUserInputFor(
+    messageId: string | undefined,
+  ): string | undefined {
+    if (!messageId) return undefined;
+    const msgs = this.messages;
+    const idx = msgs.findIndex((m) => m.id === messageId);
+    if (idx <= 0) return undefined;
+    const prev = msgs[idx - 1];
+    if (!prev || prev.role !== "user") return undefined;
+    const text = extractText(prev).trim();
+    return text || undefined;
   }
 }
 

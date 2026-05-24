@@ -19,25 +19,82 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import type { SubmitFeedbackResult } from "../../shared";
 
 export type FeedbackDialogProps = {
   message: UIMessage | null;
+  traceId: string | undefined;
+  onSubmit: (args: {
+    messageId: string;
+    traceId: string;
+    expected: string;
+    justification: string;
+  }) => Promise<SubmitFeedbackResult>;
   onOpenChange: (open: boolean) => void;
 };
 
-export function FeedbackDialog({ message, onOpenChange }: FeedbackDialogProps) {
+export function FeedbackDialog({
+  message,
+  traceId,
+  onSubmit,
+  onOpenChange,
+}: FeedbackDialogProps) {
   const [expected, setExpected] = useState("");
   const [justification, setJustification] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (message) {
       setExpected("");
       setJustification("");
+      setSubmitting(false);
+      setError(null);
     }
   }, [message]);
 
+  const hasContent = expected.trim() !== "" || justification.trim() !== "";
+  // Note: do NOT include `!error` here — Submit must stay enabled after
+  // a failure so the user can retry without having to nudge a textarea.
+  const canSubmit = !!message && !!traceId && hasContent && !submitting;
+
+  const handleSubmit = async () => {
+    if (!message || !traceId || !hasContent || submitting) return;
+    setSubmitting(true);
+    setError(null);
+    const result = await onSubmit({
+      messageId: message.id,
+      traceId,
+      expected: expected.trim(),
+      justification: justification.trim(),
+    });
+    if (result.ok) {
+      onOpenChange(false);
+    } else {
+      setError(result.error);
+      setSubmitting(false);
+    }
+  };
+
+  // Don't let ESC / backdrop click dismiss the dialog mid-submit — the
+  // in-flight `onSubmit` would resolve onto an unmounted component and
+  // a server-side failure would be silently dropped.
+  const guardedOnOpenChange = (open: boolean) => {
+    if (!open && submitting) return;
+    onOpenChange(open);
+  };
+
+  const onExpectedChange = (v: string) => {
+    setExpected(v);
+    if (error) setError(null);
+  };
+  const onJustificationChange = (v: string) => {
+    setJustification(v);
+    if (error) setError(null);
+  };
+
   return (
-    <Dialog open={message !== null} onOpenChange={onOpenChange}>
+    <Dialog open={message !== null} onOpenChange={guardedOnOpenChange}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Help Pal improve</DialogTitle>
@@ -81,9 +138,10 @@ export function FeedbackDialog({ message, onOpenChange }: FeedbackDialogProps) {
             <Textarea
               id="feedback-expected"
               value={expected}
-              onChange={(e) => setExpected(e.target.value)}
+              onChange={(e) => onExpectedChange(e.target.value)}
               placeholder="Describe the response you were hoping for…"
               rows={4}
+              disabled={submitting}
             />
           </section>
 
@@ -97,22 +155,39 @@ export function FeedbackDialog({ message, onOpenChange }: FeedbackDialogProps) {
             <Textarea
               id="feedback-justification"
               value={justification}
-              onChange={(e) => setJustification(e.target.value)}
+              onChange={(e) => onJustificationChange(e.target.value)}
               placeholder="Help Pal understand the reasoning so it can apply this lesson elsewhere…"
               rows={4}
+              disabled={submitting}
             />
           </section>
+
+          {message && !traceId ? (
+            <p className="text-sm text-muted-foreground">
+              This message doesn't have a trace ID — feedback isn't
+              available. If you keep seeing this, refresh the page.
+            </p>
+          ) : null}
+
+          {error ? (
+            <p className="text-sm text-destructive" role="alert">
+              {error}
+            </p>
+          ) : null}
         </div>
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline" disabled={submitting}>
+              Cancel
+            </Button>
           </DialogClose>
           <Button
             type="button"
-            disabled={!expected.trim() && !justification.trim()}
+            onClick={handleSubmit}
+            disabled={!canSubmit}
           >
-            Submit feedback
+            {submitting ? "Submitting…" : "Submit feedback"}
           </Button>
         </DialogFooter>
       </DialogContent>

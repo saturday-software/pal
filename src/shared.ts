@@ -9,17 +9,26 @@ export type ChatState = {
 
 /**
  * Broadcast sent by the Chat DO after each assistant turn completes,
- * mapping the assistant message ID to its Langfuse trace ID.
- *
- * No client consumes this yet — the FeedbackDialog wiring in the
- * follow-up PR will stash these per-message and include the trace ID
- * when submitting feedback so the annotation lands on the right trace.
+ * mapping the assistant message ID to its Langfuse trace ID. The
+ * client stashes these per-message and includes the trace ID when
+ * submitting feedback so the score lands on the right trace.
  */
 export type PalMessageTraceBroadcast = {
   type: "pal_message_trace";
   messageId: string;
   traceId: string;
 };
+
+export type SubmitFeedbackInput = {
+  messageId: string;
+  traceId: string;
+  expected?: string;
+  justification?: string;
+};
+
+export type SubmitFeedbackResult =
+  | { ok: true }
+  | { ok: false; error: string };
 
 /**
  * Public RPC surface exposed by the Chat agent. Mirrors the `@callable`
@@ -38,4 +47,5 @@ export interface ChatRpc {
   ): Promise<SessionInfo>;
   renameSession(sessionId: string, name: string): Promise<SessionInfo>;
   deleteSession(sessionId: string): Promise<{ activeSessionId: string }>;
+  submitFeedback(input: SubmitFeedbackInput): Promise<SubmitFeedbackResult>;
 }
