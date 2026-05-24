@@ -4,11 +4,9 @@
     "target": "ESNext",
     "module": "Preserve",
     "moduleDetection": "force",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "allowJs": true,
-    "types": ["bun"],
-
-    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
@@ -19,9 +17,15 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
+    "types": ["bun", "@cloudflare/workers-types", "@cloudflare/vitest-pool-workers"],
     "paths": {
       "@/*": ["./src/client/*"]
     }
   },
-  "include": ["src/client/**/*", "src/shared.ts", "scripts/**/*"]
+  "include": [
+    "src/**/*",
+    "evals/**/*",
+    "scripts/**/*",
+    "worker-configuration.d.ts"
+  ]
 }

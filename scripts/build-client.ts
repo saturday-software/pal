@@ -12,7 +12,7 @@ async function build() {
     outdir: "dist",
     minify: !isWatch,
     plugins: [tailwindPlugin],
-    tsconfig: "./tsconfig.client.json",
+    tsconfig: "./tsconfig.json",
   });
   if (!result.success) {
     for (const log of result.logs) console.error(log);
